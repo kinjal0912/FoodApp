@@ -1,0 +1,11 @@
+ POC Pointers for development which we will evaluate next week:-
+List of restaurants.
+1. The food item available per restaurant.
+2. Should be able to add multiple items from 2 different restaurants.
+3. Order placement can simple log in console or save in database.
+4. Order History should be visible.
+5. User should be able to order from history.
+6. Search and filter should be implemented.
+7. Navbar should have Home, Account, History.
+8. Favorite restaurants should be marked as well.
+9. Review of food orders along with images.
