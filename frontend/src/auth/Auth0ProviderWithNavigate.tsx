@@ -29,8 +29,7 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
         redirect_uri: redirectUri,
         audience,
       }}
-      onRedirectCallback={onRedirectCallback}
-    >
+      onRedirectCallback={onRedirectCallback}>
       {children}
     </Auth0Provider>
   );
