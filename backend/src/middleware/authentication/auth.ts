@@ -1,7 +1,7 @@
 import { auth } from "express-oauth2-jwt-bearer";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import User from "../../models/user";
 
 declare global {
   namespace Express {
@@ -29,7 +29,6 @@ export const jwtParse = async (
     return res.sendStatus(401);
   }
 
-  // Bearer lshdflshdjkhvjkshdjkvh34h5k3h54jkh
   const token = authorization.split(" ")[1];
   console.log("token: ", token);
 

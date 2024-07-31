@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  contactNo:{
-    type:Number
+  contactNo: {
+    type: Number,
   },
   addressLine1: {
     type: String,
@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema({
   },
   country: {
     type: String,
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'restaurant', 'buyer', 'delivery'], 
+    required: true,
   },
 });
 
