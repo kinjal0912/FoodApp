@@ -8,7 +8,7 @@ import updateCurrentUser from "../controllers/userControllers/updateCurrentUser"
 const router = express.Router();
 
 router.get("/", jwtCheck, jwtParse, getCurrentUser);
-router.post("/", jwtCheck, createCurrentUser);
+router.post("/", jwtCheck, jwtParse, createCurrentUser);
 router.put("/", jwtCheck, jwtParse, validateMyUserRequest, updateCurrentUser);
 
 export default router;

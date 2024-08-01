@@ -14,13 +14,12 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { useAuth0 } from "@auth0/auth0-react";
+import Box from "@mui/material/Box";
 
 const HeaderLink = styled(Link)({
   flexGrow: 1,
   textDecoration: "none",
   color: "inherit",
-
-  
 });
 
 const Header: React.FC = () => {
@@ -64,6 +63,7 @@ const Header: React.FC = () => {
         <Typography variant="h6" component={HeaderLink} to="/">
           FoodApp
         </Typography>
+        <Box sx={{ flexGrow: 1 }} />
         {isMobile ? (
           <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
             {menuItems}
