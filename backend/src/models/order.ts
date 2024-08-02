@@ -1,28 +1,37 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema, Model, model } from "mongoose";
 
-const orderSchema = new mongoose.Schema({
-  restaurant: { type: mongoose.Schema.Types.ObjectId, ref: "Restaurant" },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  deliveryDetails: {
-    email: { type: String, required: true },
-    name: { type: String, required: true },
-    addressLine1: { type: String, required: true },
-    city: { type: String, required: true },
+interface IOrderItem {
+  menuItem: mongoose.Types.ObjectId;
+  quantity: number;
+}
+
+interface IOrder extends Document {
+  user: mongoose.Types.ObjectId;
+  restaurant: mongoose.Types.ObjectId;
+  items: IOrderItem[];
+  totalPrice: number;
+  orderDate: Date;
+}
+
+const orderSchema = new Schema<IOrder>({
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+  restaurant: {
+    type: Schema.Types.ObjectId,
+    ref: "Restaurant",
+    required: true,
   },
-  cartItems: [
+  items: [
     {
-      menuItemId: { type: String, required: true },
+      menuItem: {
+        type: Schema.Types.ObjectId,
+        ref: "MenuItem",
+        required: true,
+      },
       quantity: { type: Number, required: true },
-      name: { type: String, required: true },
     },
   ],
-  totalAmount: Number,
-  status: {
-    type: String,
-    enum: ["placed", "paid", "inProgress", "outForDelivery", "delivered"],
-  },
-  createdAt: { type: Date, default: Date.now },
+  totalPrice: { type: Number, required: true },
+  orderDate: { type: Date, default: Date.now },
 });
 
-const Order = mongoose.model("Order", orderSchema);
-export default Order;
+export const Order: Model<IOrder> = model<IOrder>("Order", orderSchema);

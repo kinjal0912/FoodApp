@@ -1,19 +1,21 @@
-import mongoose, { InferSchemaType } from "mongoose";
+import mongoose, { Document, Schema, Model, model } from "mongoose";
+import { menuItemSchema, IMenuItem } from "../models/menuItems";
 
-const menuItemSchema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    default: () => new mongoose.Types.ObjectId(),
-  },
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-});
+interface IRestaurant extends Document {
+  user: mongoose.Types.ObjectId;
+  restaurantName: string;
+  city: string;
+  country: string;
+  deliveryPrice: number;
+  estimatedDeliveryTime: number;
+  cuisines: string[];
+  menuItems: IMenuItem[];
+  imageUrl: string;
+  lastUpdated: Date;
+}
 
-export type MenuItemType = InferSchemaType<typeof menuItemSchema>;
-
-const restaurantSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+const restaurantSchema = new Schema<IRestaurant>({
+  user: { type: Schema.Types.ObjectId, ref: "User" },
   restaurantName: { type: String, required: true },
   city: { type: String, required: true },
   country: { type: String, required: true },
@@ -25,5 +27,7 @@ const restaurantSchema = new mongoose.Schema({
   lastUpdated: { type: Date, required: true },
 });
 
-const Restaurant = mongoose.model("Restaurant", restaurantSchema);
-export default Restaurant;
+export const Restaurant: Model<IRestaurant> = model<IRestaurant>(
+  "Restaurant",
+  restaurantSchema
+);

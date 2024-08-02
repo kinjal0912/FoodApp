@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./routes/index";
 import Auth0ProviderWithNavigate from "./auth/Auth0ProviderWithNavigate";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,15 +15,12 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={""}>
-    <CssBaseline />
-      <Router>
-        <QueryClientProvider client={queryClient}>
-          <Auth0ProviderWithNavigate>
-            <AppRoutes />
-          </Auth0ProviderWithNavigate>
-        </QueryClientProvider>
-      </Router>
-    </ThemeProvider>
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <Auth0ProviderWithNavigate>
+          <AppRoutes />
+        </Auth0ProviderWithNavigate>
+      </QueryClientProvider>
+    </Router>
   </React.StrictMode>
 );
