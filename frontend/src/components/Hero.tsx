@@ -16,7 +16,7 @@ const HeroContainer = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   textAlign: "center",
   color: theme.palette.common.white,
-  height: "400px", // Adjust height as needed
+  height: "400px", 
   "&::before": {
     content: '""',
     position: "absolute",
@@ -24,7 +24,7 @@ const HeroContainer = styled(Box)(({ theme }) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    background: "rgba(0, 0, 0, 0.3)", // Dark overlay
+    background: "rgba(0, 0, 0, 0.3)", 
     zIndex: 1,
   },
 }));

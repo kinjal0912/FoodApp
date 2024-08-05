@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  auth0Id: {
+  userId: {
     type: String,
     required: true,
     unique: true,
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'restaurant', 'buyer', 'delivery'], 
+    enum: ["admin", "restaurant", "buyer", "delivery"],
     required: true,
   },
 });

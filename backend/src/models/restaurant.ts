@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Model, model } from "mongoose";
-import { menuItemSchema, IMenuItem } from "../models/menuItems";
+import { menuItemSchema, IMenuItem } from "./menuItems"; 
 
-interface IRestaurant extends Document {
+export interface IRestaurant extends Document {
   user: mongoose.Types.ObjectId;
   restaurantName: string;
   city: string;

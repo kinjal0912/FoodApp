@@ -16,7 +16,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { useAuth0 } from "@auth0/auth0-react";
 
-// Create a styled component for the link in the header
 const HeaderLink = styled(Link)({
   flexGrow: 1,
   textDecoration: "none",
@@ -30,12 +29,10 @@ const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { loginWithRedirect } = useAuth0();
 
-  // Function to toggle the drawer
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
 
-  // Menu items to be displayed in the drawer
   const menuItems = (
     <List>
       <ListItemButton
