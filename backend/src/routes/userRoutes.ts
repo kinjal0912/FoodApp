@@ -1,11 +1,19 @@
 import express from "express";
-import createCurrentUser from "../controllers/restaurantControllers/userControllers/createCurrentUser";
-
+import authMiddleware from "../middleware/authentication/authMiddleware";
+import {
+  deleteUser,
+  getUserDetails,
+  signIn,
+  signUp,
+  updateUser,
+} from "../controllers/userController";
 
 const router = express.Router();
 
-router.get("/", getCurrentUser);
-router.post("/", createCurrentUser);
-router.put("/", updateCurrentUser);
+router.post("/signup", signUp);
+router.get("/signin", signIn);
+router.put("/update", authMiddleware, updateUser);
+router.delete("/delete", authMiddleware, deleteUser);
+router.get("/getuser", authMiddleware, getUserDetails);
 
 export default router;

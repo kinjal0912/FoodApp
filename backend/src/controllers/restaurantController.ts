@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
-import restaurantService from "../../services/restaurantService";
+import {
+  createRestaurantService,
+  deleteRestaurantService,
+  getRestaurantService,
+  updateRestaurantService,
+} from "../services/restaurantService";
 
 export const addRestaurant = async (req: Request, res: Response) => {
   try {
-    const restaurant = await restaurantService.createRestaurant(req.body);
+    const restaurant = await createRestaurantService(req.body);
     res.status(201).json(restaurant);
   } catch (error) {
     console.error(error);
@@ -14,7 +19,7 @@ export const addRestaurant = async (req: Request, res: Response) => {
 export const getRestaurant = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const restaurant = await restaurantService.getRestaurant(id);
+    const restaurant = await getRestaurantService(id);
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant not found" });
     }
@@ -28,7 +33,7 @@ export const getRestaurant = async (req: Request, res: Response) => {
 export const deleteRestaurant = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const result = await restaurantService.deleteRestaurant(id);
+    const result = await deleteRestaurantService(id);
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: "Restaurant not found" });
     }
@@ -42,10 +47,7 @@ export const deleteRestaurant = async (req: Request, res: Response) => {
 export const updateRestaurant = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updatedRestaurant = await restaurantService.updateRestaurant(
-      id,
-      req.body
-    );
+    const updatedRestaurant = await updateRestaurantService(id, req.body);
     if (!updatedRestaurant) {
       return res.status(404).json({ message: "Restaurant not found" });
     }

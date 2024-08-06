@@ -1,92 +1,78 @@
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import User from "../models/user";
 
-interface CreateUserParams {
-  userId: string;
-  role?: string;
-}
-
-export const createUserService = async ({ userId, role }: CreateUserParams) => {
-  try {
-    const existingUser = await User.findOne({ userId });
-
-    if (existingUser) {
-      return { user: existingUser, created: false };
-    }
-
-    const newUser = new User({
-      userId,
-      role: role || "buyer",
-    });
-    await newUser.save();
-
-    return { user: newUser, created: true };
-  } catch (error) {
-    throw new Error("Error creating user");
+export const signUp = async (data: any) => {
+  const {
+    email,
+    password,
+    name,
+    contactNo,
+    addressLine1,
+    city,
+    country,
+    role,
+  } = data;
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new Error("Email already in use");
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = new User({
+    email,
+    password: hashedPassword,
+    name,
+    contactNo,
+    addressLine1,
+    city,
+    country,
+    role,
+  });
+
+  await user.save();
+  return user;
 };
 
-export const getUserById = async (userId: string) => {
-  try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      return { user: null, found: false };
-    }
-    return { user, found: true };
-  } catch (error) {
-    throw new Error("Error fetching user");
+export const signIn = async (data: any) => {
+  const { email, password } = data;
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    throw new Error("Invalid email or password");
   }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    throw new Error("Invalid email or password");
+  }
+
+  const token = jwt.sign(
+    { _id: user._id, role: user.role },
+    process.env.JWT_SECRET as string,
+    { expiresIn: "1h" }
+  );
+  return token;
 };
 
-export default {
-  getUserById,
+export const getUserDetails = async (userId: string) => {
+  const user = await User.findById(userId).select("-password");
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
 };
 
-type UserRole = "admin" | "restaurant" | "buyer" | "delivery";
-
-interface UpdateUserParams {
-  userId: string;
-  name?: string;
-  addressLine1?: string;
-  city?: string;
-  country?: string;
-  role?: UserRole;
-}
-
-export const updateUserById = async ({
-  userId,
-  name,
-  addressLine1,
-  city,
-  country,
-  role,
-}: UpdateUserParams) => {
-  try {
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return { user: null, updated: false };
-    }
-
-    if (name) user.name = name;
-    if (addressLine1) user.addressLine1 = addressLine1;
-    if (city) user.city = city;
-    if (country) user.country = country;
-    if (role) {
-      if (["admin", "restaurant", "buyer", "delivery"].includes(role)) {
-        user.role = role;
-      } else {
-        throw new Error("Invalid role");
-      }
-    }
-
-    await user.save();
-
-    return { user, updated: true };
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error updating user: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred while updating the user");
-    }
+export const updateUser = async (userId: string, data: any) => {
+  const user = await User.findByIdAndUpdate(userId, data, { new: true }).select(
+    "-password"
+  );
+  if (!user) {
+    throw new Error("User not found");
   }
+  return user;
+};
+
+export const deleteUser = async (userId: string) => {
+  await User.findByIdAndDelete(userId);
 };

@@ -4,7 +4,7 @@ import {
   deleteRestaurant,
   getRestaurant,
   updateRestaurant,
-} from "../controllers/restaurantControllers/restaurantController";
+} from "../controllers/restaurantController";
 
 const restroRouter = express.Router();
 
