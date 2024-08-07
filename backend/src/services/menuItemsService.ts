@@ -1,4 +1,4 @@
-import MenuItem, { IMenuItem } from "../models/menuItems";
+import { MenuItem, IMenuItem } from "../models/menuItems";
 
 export const createMenuItem = async (menuItemData: IMenuItem) => {
   const menuItem = new MenuItem(menuItemData);

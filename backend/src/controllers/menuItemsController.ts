@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as MenuItemService from "../services/menuItemService";
+import * as MenuItemService from "../services/menuItemsService";
 import { validationResult } from "express-validator";
 
 export const createMenuItem = async (req: Request, res: Response) => {
