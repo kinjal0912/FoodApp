@@ -1,59 +1,80 @@
 import { Request, Response } from "express";
-import {
-  createRestaurantService,
-  deleteRestaurantService,
-  getRestaurantService,
-  updateRestaurantService,
-} from "../services/restaurantService";
+import * as RestaurantService from "../services/restaurantService";
 
-export const addRestaurant = async (req: Request, res: Response) => {
+export const createRestaurant = async (req: Request, res: Response) => {
   try {
-    const restaurant = await createRestaurantService(req.body);
+    const restaurantData = req.body;
+    const restaurant = await RestaurantService.createRestaurant(restaurantData);
     res.status(201).json(restaurant);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error adding restaurant" });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred! Internal" });
+    }
   }
 };
 
-export const getRestaurant = async (req: Request, res: Response) => {
+export const getRestaurants = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const restaurant = await getRestaurantService(id);
+    const restaurants = await RestaurantService.getRestaurants();
+    res.status(200).json(restaurants);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred! Internal" });
+    }
+  }
+};
+
+export const getRestaurantById = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await RestaurantService.getRestaurantById(req.params._id);
     if (!restaurant) {
-      return res.status(404).json({ message: "Restaurant not found" });
+      return res.status(404).json({ error: "Restaurant not found" });
     }
     res.status(200).json(restaurant);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error fetching restaurant" });
-  }
-};
-
-export const deleteRestaurant = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const result = await deleteRestaurantService(id);
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ message: "Restaurant not found" });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred" });
     }
-    res.status(200).json({ message: "Restaurant deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error deleting restaurant" });
   }
 };
 
 export const updateRestaurant = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const updatedRestaurant = await updateRestaurantService(id, req.body);
-    if (!updatedRestaurant) {
-      return res.status(404).json({ message: "Restaurant not found" });
+    const restaurant = await RestaurantService.updateRestaurant(
+      req.params.id,
+      req.body
+    );
+    if (!restaurant) {
+      return res.status(404).json({ error: "Restaurant not found" });
     }
-    res.status(200).json(updatedRestaurant);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error updating restaurant" });
+    res.status(200).json(restaurant);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred! Internal" });
+    }
+  }
+};
+
+export const deleteRestaurant = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await RestaurantService.deleteRestaurant(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({ error: "Restaurant not found" });
+    }
+    res.status(200).json({ message: "Restaurant deleted successfully" });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred! Internal" });
+    }
   }
 };

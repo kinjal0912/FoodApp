@@ -1,33 +1,48 @@
-import mongoose, { Document, Schema, Model, model } from "mongoose";
-import { menuItemSchema, IMenuItem } from "./menuItems"; 
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IRestaurant extends Document {
-  user: mongoose.Types.ObjectId;
-  restaurantName: string;
+  _id: mongoose.Types.ObjectId;
+  name: string;
+  address: string;
   city: string;
   country: string;
-  deliveryPrice: number;
-  estimatedDeliveryTime: number;
-  cuisines: string[];
-  menuItems: IMenuItem[];
-  imageUrl: string;
-  lastUpdated: Date;
+  postalCode: string;
+  contactNumber: number;
+  cuisineType: string[];
+  isOpen: boolean;
+  isVeg: boolean;
+  isNonVeg: boolean;
+  openingTime: string; // Format: "HH:mm"
+  closingTime: string; // Format: "HH:mm"
+  menuItems: mongoose.Types.ObjectId[];
 }
 
-const restaurantSchema = new Schema<IRestaurant>({
-  user: { type: Schema.Types.ObjectId, ref: "User" },
-  restaurantName: { type: String, required: true },
+const RestaurantSchema: Schema = new Schema({
+  _id: {
+    type: mongoose.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId(),
+  },
+  name: { type: String, required: true },
+  address: { type: String, required: true },
   city: { type: String, required: true },
   country: { type: String, required: true },
-  deliveryPrice: { type: Number, required: true },
-  estimatedDeliveryTime: { type: Number, required: true },
-  cuisines: [{ type: String, required: true }],
-  menuItems: [menuItemSchema],
-  imageUrl: { type: String, required: true },
-  lastUpdated: { type: Date, required: true },
+  postalCode: { type: String, required: true },
+  contactNumber: { type: Number, required: true },
+  cuisineType: { type: [String], required: true },
+  isOpen: { type: Boolean, default: true },
+  isVeg: { type: Boolean, default: true },
+  isNonVeg: { type: Boolean, default: false },
+  openingTime: {
+    type: String,
+    required: true,
+    match: /^([0-1]\d|2[0-3]):([0-5]\d)$/,
+  },
+  closingTime: {
+    type: String,
+    required: true,
+    match: /^([0-1]\d|2[0-3]):([0-5]\d)$/,
+  },
+  menuItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "MenuItem" }],
 });
 
-export const Restaurant: Model<IRestaurant> = model<IRestaurant>(
-  "Restaurant",
-  restaurantSchema
-);
+export default mongoose.model<IRestaurant>("Restaurant", RestaurantSchema);

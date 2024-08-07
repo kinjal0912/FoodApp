@@ -16,7 +16,7 @@ const authMiddleware = (
   }
 
   try {
-    const decoded = jwt.verify(token, "your_jwt_secret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     req.user = decoded;
     next();
   } catch (error) {

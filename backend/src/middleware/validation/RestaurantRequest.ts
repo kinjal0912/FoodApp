@@ -14,25 +14,29 @@ const handleValidationErrors = async (
 };
 
 export const validateRestaurantRequest = [
-  body("restaurantName").notEmpty().withMessage("Restaurant name is required"),
+  body("name").notEmpty().withMessage("Restaurant name is required"),
+  body("address").notEmpty().withMessage("Address is required"),
   body("city").notEmpty().withMessage("City is required"),
   body("country").notEmpty().withMessage("Country is required"),
-  body("deliveryPrice")
-    .isFloat({ min: 0 })
-    .withMessage("Delivery price must be a positive number"),
-  body("estimatedDeliveryTime")
-    .isInt({ min: 0 })
-    .withMessage("Estimated delivery time must be a postivie integar"),
-  body("cuisines")
+  body("postalCode").notEmpty().withMessage("Postal code is required"),
+  body("contactNumber").notEmpty().withMessage("Contact number is required"),
+  body("cuisineType")
     .isArray()
-    .withMessage("Cuisines must be an array")
+    .withMessage("Cuisine type must be an array")
     .not()
     .isEmpty()
-    .withMessage("Cuisines array cannot be empty"),
+    .withMessage("Cuisine type array cannot be empty"),
+  body("cuisineType.*")
+    .isString()
+    .withMessage("Each cuisine type must be a string"),
+  body("isOpen").isBoolean().withMessage("IsOpen must be a boolean"),
+  body("isVeg").isBoolean().withMessage("IsVeg must be a boolean"),
+  body("isNonVeg").isBoolean().withMessage("IsNonVeg must be a boolean"),
+  body("openingTime").notEmpty().withMessage("Opening time is required"),
+  body("closingTime").notEmpty().withMessage("Closing time is required"),
   body("menuItems").isArray().withMessage("Menu items must be an array"),
-  body("menuItems.*.name").notEmpty().withMessage("Menu item name is required"),
-  body("menuItems.*.price")
-    .isFloat({ min: 0 })
-    .withMessage("Menu item price is required and must be a postive number"),
+  body("menuItems.*")
+    .isMongoId()
+    .withMessage("Each menu item must be a valid MongoDB ObjectId"),
   handleValidationErrors,
 ];

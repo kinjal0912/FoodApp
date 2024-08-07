@@ -28,7 +28,7 @@ export const signUp = async (data: any) => {
     addressLine1,
     city,
     country,
-    role,
+    role: role || "buyer",
   });
 
   await user.save();

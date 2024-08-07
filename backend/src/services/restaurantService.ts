@@ -1,21 +1,28 @@
-import { Restaurant, IRestaurant } from "../models/restaurant";
+import Restaurant, { IRestaurant } from "../models/restaurant";
 
-export const createRestaurantService = async (data: IRestaurant) => {
-  const restaurant = new Restaurant(data);
-  return restaurant.save();
+export const createRestaurant = async (restaurantData: IRestaurant) => {
+  const restaurant = new Restaurant(restaurantData);
+  await restaurant.save();
+  return restaurant;
 };
 
-export const deleteRestaurantService = async (id: string) => {
-  return Restaurant.deleteOne({ _id: id });
+export const getRestaurants = async () => {
+  return await Restaurant.find().populate("menuItems");
 };
 
-export const updateRestaurantService = async (
+export const getRestaurantById = async (_id: string) => {
+  return await Restaurant.findById(_id).populate("menuItems");
+};
+
+export const updateRestaurant = async (
   id: string,
-  data: Partial<IRestaurant>
+  updates: Partial<IRestaurant>
 ) => {
-  return Restaurant.findByIdAndUpdate(id, data, { new: true });
+  return await Restaurant.findByIdAndUpdate(id, updates, {
+    new: true,
+  }).populate("menuItems");
 };
 
-export const getRestaurantService = async (id: string) => {
-  return Restaurant.findById(id).populate("user").exec();
+export const deleteRestaurant = async (id: string) => {
+  return await Restaurant.findByIdAndDelete(id);
 };

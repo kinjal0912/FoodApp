@@ -1,16 +1,19 @@
 import express from "express";
 import {
-  addRestaurant,
+  createRestaurant,
   deleteRestaurant,
-  getRestaurant,
+  getRestaurantById,
+  // getRestaurants,
   updateRestaurant,
 } from "../controllers/restaurantController";
 
 const restroRouter = express.Router();
 
-restroRouter.post("/", addRestaurant);
-restroRouter.get("/getrestro", getRestaurant);
+restroRouter.post("/add", createRestaurant);
+// restroRouter.get("/getrestro", getRestaurants);
+restroRouter.get("/getrestro/:_id", getRestaurantById);
 restroRouter.delete("/deleteRestro", deleteRestaurant);
 restroRouter.put("/update-restro", updateRestaurant);
+restroRouter.get("/search", getRestaurantById);
 
 export default restroRouter;
