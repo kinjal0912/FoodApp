@@ -15,10 +15,10 @@ export const getRestaurantById = async (_id: string) => {
 };
 
 export const updateRestaurant = async (
-  id: string,
+  _id: string,
   updates: Partial<IRestaurant>
 ) => {
-  return await Restaurant.findByIdAndUpdate(id, updates, {
+  return await Restaurant.findByIdAndUpdate(_id, updates, {
     new: true,
   }).populate("menuItems");
 };

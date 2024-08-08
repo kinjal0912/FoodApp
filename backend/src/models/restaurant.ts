@@ -28,7 +28,7 @@ const RestaurantSchema: Schema = new Schema({
   country: { type: String, required: true },
   postalCode: { type: String, required: true },
   contactNumber: { type: Number, required: true },
-  cuisineType: { type: [String], required: true },
+  cuisineType: { type: [String] },
   isOpen: { type: Boolean, default: true },
   isVeg: { type: Boolean, default: true },
   isNonVeg: { type: Boolean, default: false },

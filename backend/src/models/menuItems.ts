@@ -7,6 +7,7 @@ export interface IMenuItem extends Document {
   isVeg: boolean;
   isJainFriendly: boolean;
   ingredients: string[];
+  description: string;
   isNonVeg: boolean;
 }
 
@@ -21,6 +22,7 @@ export const menuItemSchema = new Schema<IMenuItem>({
   isVeg: { type: Boolean, required: true },
   isJainFriendly: { type: Boolean, required: true },
   ingredients: { type: [String], required: true },
+  description: { type: String },
   isNonVeg: { type: Boolean, required: true },
 });
 

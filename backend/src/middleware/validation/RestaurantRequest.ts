@@ -21,6 +21,7 @@ export const validateRestaurantRequest = [
   body("postalCode").notEmpty().withMessage("Postal code is required"),
   body("contactNumber").notEmpty().withMessage("Contact number is required"),
   body("cuisineType")
+    .optional()
     .isArray()
     .withMessage("Cuisine type must be an array")
     .not()
@@ -39,4 +40,37 @@ export const validateRestaurantRequest = [
     .isMongoId()
     .withMessage("Each menu item must be a valid MongoDB ObjectId"),
   handleValidationErrors,
+];
+
+export const validateRestaurantUpdate = [
+  body("name").optional().isString().withMessage("Name must be a string"),
+  body("address").optional().isString().withMessage("Address must be a string"),
+  body("city").optional().isString().withMessage("City must be a string"),
+  body("country").optional().isString().withMessage("Country must be a string"),
+  body("postalCode")
+    .optional()
+    .isString()
+    .withMessage("Postal code must be a string"),
+  body("contactNumber")
+    .optional()
+    .isNumeric()
+    .withMessage("Contact number must be a number"),
+  body("cuisineType")
+    .optional()
+    .isArray()
+    .withMessage("Cuisine type must be an array of strings"),
+  body("isOpen").optional().isBoolean().withMessage("IsOpen must be a boolean"),
+  body("isVeg").optional().isBoolean().withMessage("IsVeg must be a boolean"),
+  body("isNonVeg")
+    .optional()
+    .isBoolean()
+    .withMessage("IsNonVeg must be a boolean"),
+  body("openingTime")
+    .optional()
+    .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/)
+    .withMessage("Opening time must be in HH:mm format"),
+  body("closingTime")
+    .optional()
+    .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/)
+    .withMessage("Closing time must be in HH:mm format"),
 ];

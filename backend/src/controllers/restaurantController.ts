@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as RestaurantService from "../services/restaurantService";
+import { validationResult } from "express-validator";
 
 export const createRestaurant = async (req: Request, res: Response) => {
   try {
@@ -30,7 +31,9 @@ export const getRestaurants = async (req: Request, res: Response) => {
 
 export const getRestaurantById = async (req: Request, res: Response) => {
   try {
-    const restaurant = await RestaurantService.getRestaurantById(req.params._id);
+    const restaurant = await RestaurantService.getRestaurantById(
+      req.params._id
+    );
     if (!restaurant) {
       return res.status(404).json({ error: "Restaurant not found" });
     }
@@ -45,9 +48,14 @@ export const getRestaurantById = async (req: Request, res: Response) => {
 };
 
 export const updateRestaurant = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const restaurant = await RestaurantService.updateRestaurant(
-      req.params.id,
+      req.params._id,
       req.body
     );
     if (!restaurant) {
@@ -65,7 +73,7 @@ export const updateRestaurant = async (req: Request, res: Response) => {
 
 export const deleteRestaurant = async (req: Request, res: Response) => {
   try {
-    const restaurant = await RestaurantService.deleteRestaurant(req.params.id);
+    const restaurant = await RestaurantService.deleteRestaurant(req.params._id);
     if (!restaurant) {
       return res.status(404).json({ error: "Restaurant not found" });
     }

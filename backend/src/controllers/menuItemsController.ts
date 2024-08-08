@@ -57,7 +57,10 @@ export const updateMenuItem = async (req: Request, res: Response) => {
   }
 
   try {
-    const menuItem = await MenuItemService.updateMenuItem(req.params.id, req.body);
+    const menuItem = await MenuItemService.updateMenuItem(
+      req.params.id,
+      req.body
+    );
     if (!menuItem) {
       return res.status(404).json({ error: "MenuItem not found" });
     }
