@@ -1,8 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import {
   Avatar,
-  Button,
-  TextField,
   Grid,
   Box,
   Typography,
@@ -15,6 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SummaryApi from "../common/Api";
+import CustomInput from "../components/Input";
+import CustomButton from "../components/Button";
 
 const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +49,6 @@ const SignIn: React.FC = () => {
         const result = await response.json();
         const { token } = result;
 
-        // Save the token to local storage or session storage
         localStorage.setItem("authToken", token);
 
         toast("Sign-in successful");
@@ -82,8 +81,7 @@ const SignIn: React.FC = () => {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 required
                 fullWidth
                 id="email"
@@ -96,8 +94,7 @@ const SignIn: React.FC = () => {
             </Grid>
             <Grid item xs={12}>
               <Box sx={{ position: "relative" }}>
-                <TextField
-                  variant="outlined"
+                <CustomInput
                   required
                   fullWidth
                   name="password"
@@ -116,14 +113,14 @@ const SignIn: React.FC = () => {
               </Box>
             </Grid>
           </Grid>
-          <Button
+          <CustomButton
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             sx={{ mt: 3, mb: 2 }}>
             Sign In
-          </Button>
+          </CustomButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signup" variant="body2">

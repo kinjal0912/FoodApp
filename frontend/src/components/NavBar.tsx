@@ -8,8 +8,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for JWT token in localStorage or cookies
-    const token = localStorage.getItem("token"); // or check cookies
+    const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
@@ -23,7 +22,7 @@ const Navbar: React.FC = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Food Order App
+          Restro.in
         </Typography>
         <Box>
           <Button color="inherit" component={Link} to="/">

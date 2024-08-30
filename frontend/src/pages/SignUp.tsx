@@ -1,13 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import {
   Avatar,
-  Button,
-  TextField,
   Grid,
   Box,
   Typography,
   Container,
-  MenuItem,
   IconButton,
   Link,
 } from "@mui/material";
@@ -16,6 +13,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SummaryApi from "../common/Api";
+import CustomInput from "../components/Input";
+import CustomButton from "../components/Button";
+import CustomMenuItem from "../components/MenuItem";
 
 const Signup: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +46,6 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Validate passwords
     if (data.password !== data.confirmPassword) {
       toast("Passwords do not match");
       return;
@@ -66,11 +65,11 @@ const Signup: React.FC = () => {
         navigate("/signin");
       } else {
         const errorResult = await response.json();
-        console.error("Sign-up error:", errorResult); // Added logging
+        console.error("Sign-up error:", errorResult);
         toast(`Error: ${errorResult.message}`);
       }
     } catch (error) {
-      console.error("Error during sign-up:", error); // Added logging
+      console.error("Error during sign-up:", error);
       toast("An error occurred. Please try again.");
     }
   };
@@ -93,8 +92,7 @@ const Signup: React.FC = () => {
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 required
                 fullWidth
                 id="email"
@@ -108,8 +106,7 @@ const Signup: React.FC = () => {
 
             <Grid item xs={12}>
               <Box sx={{ position: "relative" }}>
-                <TextField
-                  variant="outlined"
+                <CustomInput
                   required
                   fullWidth
                   name="password"
@@ -129,8 +126,7 @@ const Signup: React.FC = () => {
 
             <Grid item xs={12}>
               <Box sx={{ position: "relative" }}>
-                <TextField
-                  variant="outlined"
+                <CustomInput
                   required
                   fullWidth
                   name="confirmPassword"
@@ -149,8 +145,7 @@ const Signup: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 fullWidth
                 id="name"
                 label="Name"
@@ -161,8 +156,7 @@ const Signup: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 fullWidth
                 id="contactNo"
                 label="Contact Number"
@@ -173,8 +167,7 @@ const Signup: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 fullWidth
                 id="addressLine1"
                 label="Address Line 1"
@@ -185,8 +178,7 @@ const Signup: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 fullWidth
                 id="city"
                 label="City"
@@ -197,8 +189,7 @@ const Signup: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 fullWidth
                 id="country"
                 label="Country"
@@ -209,8 +200,7 @@ const Signup: React.FC = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                variant="outlined"
+              <CustomInput
                 select
                 required
                 fullWidth
@@ -219,21 +209,21 @@ const Signup: React.FC = () => {
                 name="role"
                 value={data.role}
                 onChange={handleOnChange}>
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="restaurant">Restaurant</MenuItem>
-                <MenuItem value="buyer">Buyer</MenuItem>
-                <MenuItem value="delivery">Delivery</MenuItem>
-              </TextField>
+                <CustomMenuItem value="admin">Admin</CustomMenuItem>
+                <CustomMenuItem value="restaurant">Restaurant</CustomMenuItem>
+                <CustomMenuItem value="buyer">Buyer</CustomMenuItem>
+                <CustomMenuItem value="delivery">Delivery</CustomMenuItem>
+              </CustomInput>
             </Grid>
           </Grid>
-          <Button
+          <CustomButton
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             sx={{ mt: 3, mb: 2 }}>
             Sign Up
-          </Button>
+          </CustomButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signin" variant="body2">

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Box, Drawer, List, ListItem, IconButton, Button } from "@mui/material";
+import { Box, Drawer, List, ListItem, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import CustomButton from "../components/Button";
 
 const Sidebar: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -18,6 +20,13 @@ const Sidebar: React.FC = () => {
       setIsDrawerOpen(open);
     };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/signin");
+  };
+
+  const isLoggedIn = !!localStorage.getItem("authToken");
+
   const drawerContent = (
     <Box
       sx={{ width: 250 }}
@@ -26,65 +35,84 @@ const Sidebar: React.FC = () => {
       onKeyDown={toggleDrawer(false)}>
       <List>
         <ListItem>
-          <Button
+          <CustomButton
             component={Link}
             to="/"
             fullWidth
             variant="text"
             sx={{ justifyContent: "flex-start" }}>
             Home
-          </Button>
+          </CustomButton>
         </ListItem>
+
         <ListItem>
-          <Button
+          <CustomButton
+            component={Link}
+            to="/add-restro"
+            fullWidth
+            variant="text"
+            sx={{ justifyContent: "flex-start" }}>
+            Add Restaurant
+          </CustomButton>
+        </ListItem>
+
+        <ListItem>
+          <CustomButton
             component={Link}
             to="/account"
             fullWidth
             variant="text"
             sx={{ justifyContent: "flex-start" }}>
             Account
-          </Button>
+          </CustomButton>
         </ListItem>
+
         <ListItem>
-          <Button
+          <CustomButton
             component={Link}
             to="/order-history"
             fullWidth
             variant="text"
             sx={{ justifyContent: "flex-start" }}>
             Order History
-          </Button>
+          </CustomButton>
         </ListItem>
+
+        {!isLoggedIn && (
+          <>
+            <ListItem>
+              <CustomButton
+                component={Link}
+                to="/signup"
+                fullWidth
+                variant="text"
+                sx={{ justifyContent: "flex-start" }}>
+                Sign Up
+              </CustomButton>
+            </ListItem>
+
+            <ListItem>
+              <CustomButton
+                component={Link}
+                to="/signin"
+                fullWidth
+                variant="text"
+                sx={{ justifyContent: "flex-start" }}>
+                Sign In
+              </CustomButton>
+            </ListItem>
+          </>
+        )}
+
         <ListItem>
-          <Button
-            component={Link}
-            to="/logout"
+          <CustomButton
+            component="button"
             fullWidth
             variant="text"
+            onClick={handleLogout}
             sx={{ justifyContent: "flex-start" }}>
             Logout
-          </Button>
-        </ListItem>
-        {/* Replace Sign Up and Sign In when the user is not logged in */}
-        <ListItem>
-          <Button
-            component={Link}
-            to="/signup"
-            fullWidth
-            variant="text"
-            sx={{ justifyContent: "flex-start" }}>
-            Sign Up
-          </Button>
-        </ListItem>
-        <ListItem>
-          <Button
-            component={Link}
-            to="/signin"
-            fullWidth
-            variant="text"
-            sx={{ justifyContent: "flex-start" }}>
-            Sign In
-          </Button>
+          </CustomButton>
         </ListItem>
       </List>
     </Box>
